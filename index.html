@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>極速庫存查詢</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* 讓清單滑動時有 App 的吸附感 */
+      .scroll-container {
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        height: calc(100vh - 140px);
+      }
+      .item-card {
+        scroll-snap-align: start;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 flex flex-col h-screen overflow-hidden">
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+      <h1 class="text-xl font-bold">庫存快查 (4G版)</h1>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="輸入關鍵字..."
+        class="w-full mt-2 p-2 rounded text-black focus:outline-none"
+      />
+    </header>
+
+    <main id="inventoryList" class="scroll-container p-4 space-y-3"></main>
+
+    <footer class="p-3 bg-white border-t text-center text-sm text-gray-500">
+      最後更新: 2026/02/01
+    </footer>
+
+    <script>
+      // Hardcoded 數據：體積極小，載入速度最快
+      const stockData = [
+        { id: "A001", name: "iPhone 15 Pro", qty: 12, loc: "A區-01" },
+        { id: "A002", name: "iPad Air M2", qty: 5, loc: "B區-03" },
+        { id: "B005", name: "MacBook Air", qty: 8, loc: "A區-05" },
+        { id: "C010", name: "AirPods Pro", qty: 45, loc: "C區-02" },
+        { id: "D022", name: "Magic Mouse", qty: 0, loc: "D區-01" },
+      ];
+
+      const listContainer = document.getElementById("inventoryList");
+      const searchInput = document.getElementById("searchInput");
+
+      // 渲染函數
+      function render(filter = "") {
+        const filtered = stockData.filter(
+          (item) =>
+            item.name.toLowerCase().includes(filter.toLowerCase()) ||
+            item.id.toLowerCase().includes(filter.toLowerCase()),
+        );
+
+        listContainer.innerHTML = filtered
+          .map(
+            (item) => `
+                <div class="item-card bg-white p-4 rounded-lg shadow border-l-4 ${item.qty > 0 ? "border-green-500" : "border-red-500"}">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">${item.name}</h3>
+                            <p class="text-gray-500 text-sm">編號: ${item.id}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-2xl font-black ${item.qty > 0 ? "text-blue-600" : "text-red-500"}">${item.qty}</span>
+                            <p class="text-xs text-gray-400">現貨</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-1 rounded">
+                        📍 儲位: ${item.loc}
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      // 監聽搜尋
+      searchInput.addEventListener("input", (e) => render(e.target.value));
+
+      // 初始渲染
+      render();
+    </script>
+  </body>
+</html>
