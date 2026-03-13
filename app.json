@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "my-stock-check",
+    "slug": "my-stock-check",
+    "version": "1.0.0",
+    "scheme": "my-stock-check",
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": ["expo-router"]
+  }
+}
