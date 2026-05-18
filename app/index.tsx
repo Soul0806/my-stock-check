@@ -6,7 +6,7 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.text}>🚀 Vercel x React Native Web 測試成功!</Text>
       <Text style={styles.subText}>
-        如果你在 iPhone 4G 看到這行，代表環境通了。
+        如果你在 iPhone 4G 看到這行，代表環境通了。!!!
       </Text>
     </View>
   );
